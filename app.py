@@ -90,15 +90,19 @@ def weather(date_input):
 @app.route("/api/v1.0/<date_input>/<end_date>")
 def weather2(date_input, end_date):
   session = Session(engine)
-  results = session.query(Measurement.date, Measurement.tobs).filter(Measurement.date > date_input).filter(Measurement.date < end_date)
+  results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).filter(Measurement.date >= date_input).filter(Measurement.date <= end_date).all()
   session.close()
   your_weather = []
-  for date, tobs in results:
+  for min, avg, max in results:
     weathers = {}
-    weathers["date"] = date
-    weathers["temp"] = tobs
+    weathers["minimum temp"] = min
+    weathers["average temp"] = avg
+    weathers["maximum temp"] = max
     your_weather.append(weathers)
   return jsonify(your_weather)
+
+
+  return jsonify(results)
 
 
 if __name__ == '__main__':
