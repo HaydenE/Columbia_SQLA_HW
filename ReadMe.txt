@@ -1,1 +1,3 @@
-SQL Alchemy Homework
+SQL Alchemy 
+
+In this project I created a series of visualizations using a SQL database I created for that purpose. 
